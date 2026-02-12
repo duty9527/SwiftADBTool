@@ -105,4 +105,4 @@ SIGN_IDENTITY=\"Developer ID Application: Your Name (TEAMID)\" \
 
 ## Attribution
 
-附注：整个项目由 Codex vibe code 完成，未改动任何代码，由仓库维护者自行提交。
+Note: This entire project was completed with Codex vibe code, with no code modifications, and submitted by the repository maintainer.
