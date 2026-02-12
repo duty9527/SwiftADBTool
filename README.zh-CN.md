@@ -80,6 +80,26 @@ SIGN_IDENTITY="Developer ID Application: Your Name (TEAMID)" \
 ./scripts/package_macos_app.sh
 ```
 
+## 打包排障
+
+如果打包后的应用无法启动或启动后立即退出，请使用最新打包脚本。它现在会：
+
+- 将运行时资源复制到 `Contents/Resources`，避免缺失资源导致的启动崩溃
+- 在未提供 `SIGN_IDENTITY` 时默认进行 ad-hoc 签名
+- 首次构建因模块缓存/路径变化失败时，清理 `.build` 后自动重试一次
+
+如果 macOS 在下载/解压后拦截应用（Gatekeeper），可移除 quarantine 属性：
+
+```bash
+xattr -dr com.apple.quarantine /path/to/SwiftADBTool.app
+```
+
+通常不需要 `sudo`。只有在提示 `Operation not permitted` 或 `Permission denied` 时，再使用：
+
+```bash
+sudo xattr -dr com.apple.quarantine /path/to/SwiftADBTool.app
+```
+
 ## 项目结构
 
 - `Package.swift`：Swift 包配置

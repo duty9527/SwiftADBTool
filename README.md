@@ -94,6 +94,12 @@ If macOS blocks the app after downloading/unzipping (Gatekeeper), remove the qua
 xattr -dr com.apple.quarantine /path/to/SwiftADBTool.app
 ```
 
+`sudo` is usually not required. Use it only if you see `Operation not permitted` or `Permission denied`:
+
+```bash
+sudo xattr -dr com.apple.quarantine /path/to/SwiftADBTool.app
+```
+
 ## Project Layout
 
 - `Package.swift`: Swift package config
