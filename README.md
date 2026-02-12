@@ -80,6 +80,20 @@ SIGN_IDENTITY=\"Developer ID Application: Your Name (TEAMID)\" \
 ./scripts/package_macos_app.sh
 ```
 
+## Packaging Troubleshooting
+
+If the packaged app fails to launch or exits immediately, use the latest packaging script. It now:
+
+- Copies runtime resources into `Contents/Resources` to prevent missing-resource startup crashes
+- Signs the app ad-hoc by default when `SIGN_IDENTITY` is not provided
+- Retries the build once after cleaning `.build` when module cache/path changes break the first build
+
+If macOS blocks the app after downloading/unzipping (Gatekeeper), remove the quarantine attribute:
+
+```bash
+xattr -dr com.apple.quarantine /path/to/SwiftADBTool.app
+```
+
 ## Project Layout
 
 - `Package.swift`: Swift package config

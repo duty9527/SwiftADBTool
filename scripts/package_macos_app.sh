@@ -13,7 +13,13 @@ CONFIGURATION="${CONFIGURATION:-release}"
 OUT_DIR="${OUT_DIR:-$ROOT_DIR/dist}"
 SIGN_IDENTITY="${SIGN_IDENTITY:-}"
 
-RESOURCE_ICON="$ROOT_DIR/Sources/SwiftADBTool/Resources/AppIcon.icns"
+RESOURCE_DIR="$ROOT_DIR/Sources/SwiftADBTool/Resources"
+RESOURCE_ICON="$RESOURCE_DIR/AppIcon.icns"
+
+if [[ ! -d "$RESOURCE_DIR" ]]; then
+  echo "[ERROR] Missing resources directory: $RESOURCE_DIR"
+  exit 1
+fi
 
 if [[ ! -f "$RESOURCE_ICON" ]]; then
   echo "[ERROR] Missing icon: $RESOURCE_ICON"
@@ -21,7 +27,11 @@ if [[ ! -f "$RESOURCE_ICON" ]]; then
 fi
 
 echo "[1/4] Building $EXECUTABLE_NAME ($CONFIGURATION)..."
-swift build -c "$CONFIGURATION" >/dev/null
+if ! swift build -c "$CONFIGURATION" >/dev/null; then
+  echo "[WARN] Initial build failed. Cleaning .build and retrying once..."
+  rm -rf "$ROOT_DIR/.build"
+  swift build -c "$CONFIGURATION" >/dev/null
+fi
 BIN_DIR="$(swift build -c "$CONFIGURATION" --show-bin-path)"
 BIN_PATH="$BIN_DIR/$EXECUTABLE_NAME"
 
@@ -57,7 +67,7 @@ mkdir -p "$MACOS_DIR" "$RES_DIR"
 echo "[2/4] Assembling app bundle..."
 cp "$BIN_PATH" "$MACOS_DIR/$EXECUTABLE_NAME"
 chmod +x "$MACOS_DIR/$EXECUTABLE_NAME"
-cp "$RESOURCE_ICON" "$RES_DIR/AppIcon.icns"
+cp -R "$RESOURCE_DIR/." "$RES_DIR/"
 
 cat > "$PLIST_PATH" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -94,7 +104,8 @@ if [[ -n "$SIGN_IDENTITY" ]]; then
   echo "[3/4] Signing app with identity: $SIGN_IDENTITY"
   codesign --force --deep --options runtime --sign "$SIGN_IDENTITY" "$APP_DIR"
 else
-  echo "[3/4] Skipping codesign (SIGN_IDENTITY is empty)."
+  echo "[3/4] Signing app ad-hoc (no SIGN_IDENTITY provided)."
+  codesign --force --deep --sign - "$APP_DIR"
 fi
 
 ZIP_PATH="$OUT_DIR/${APP_NAME}-${APP_VERSION}-macOS.zip"

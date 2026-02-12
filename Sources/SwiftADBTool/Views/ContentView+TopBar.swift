@@ -3,12 +3,10 @@ import SwiftUI
 
 extension ContentView {
     private var headerIconImage: NSImage? {
-        if let pngURL = Bundle.module.url(forResource: "AppIcon-1024", withExtension: "png"),
-           let image = NSImage(contentsOf: pngURL) {
+        if let image = AppResource.image(named: "AppIcon-1024", ext: "png") {
             return image
         }
-        if let icnsURL = Bundle.module.url(forResource: "AppIcon", withExtension: "icns"),
-           let image = NSImage(contentsOf: icnsURL) {
+        if let image = AppResource.image(named: "AppIcon", ext: "icns") {
             return image
         }
         return nil

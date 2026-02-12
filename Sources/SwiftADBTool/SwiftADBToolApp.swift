@@ -7,8 +7,7 @@ struct SwiftADBToolApp: App {
 
     init() {
         NSApplication.shared.setActivationPolicy(.regular)
-        if let iconURL = Bundle.module.url(forResource: "AppIcon", withExtension: "icns"),
-           let iconImage = NSImage(contentsOf: iconURL) {
+        if let iconImage = AppResource.image(named: "AppIcon", ext: "icns") {
             NSApplication.shared.applicationIconImage = iconImage
             let workspace = NSWorkspace.shared
             _ = workspace.setIcon(iconImage, forFile: Bundle.main.bundlePath, options: [])
