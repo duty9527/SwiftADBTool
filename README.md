@@ -125,4 +125,4 @@ sudo xattr -dr com.apple.quarantine /path/to/SwiftADBTool.app
 
 ## Attribution
 
-Note: This entire project was completed with Codex vibe code, with no code modifications, and submitted by the repository maintainer.
+Note: This entire project was completed with Codex Vibe coding, with no code modifications, and submitted by the repository maintainer.
