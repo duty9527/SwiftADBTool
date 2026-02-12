@@ -102,3 +102,7 @@ SIGN_IDENTITY=\"Developer ID Application: Your Name (TEAMID)\" \
 
 - This project focuses on high-frequency ADB capabilities used in development/testing.
 - Some advanced/rare flags are not exposed as dedicated controls but can be executed via the Shell tab.
+
+## Attribution
+
+附注：整个项目由 Codex vibe code 完成，未改动任何代码，由仓库维护者自行提交。
